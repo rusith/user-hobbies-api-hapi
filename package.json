@@ -1,0 +1,11 @@
+{
+  "name": "user-hobbies-api",
+  "version": "1.0.0",
+  "description": "A user hobbies API using the Hapi framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Rusith",
+  "license": "ISC"
+}
