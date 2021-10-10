@@ -1,6 +1,8 @@
 import Hapi from "@hapi/hapi"
-import { createUser, getAllUsers } from "app/modules/users"
+import { IUser } from "app/models/user"
+import { createUser, getAllUsers, updateUser } from "app/modules/users"
 import Joi from "joi"
+import { createHandler } from "./helpers"
 
 export default function (server: Hapi.Server): void {
   server.route([
@@ -12,9 +14,24 @@ export default function (server: Hapi.Server): void {
     {
       method: "POST",
       path: "/users",
-      handler: (req) => createUser((req.payload as { name: string }).name),
+      handler: createHandler<IUser>((pl) => createUser(pl.name)),
       options: {
         validate: {
+          payload: Joi.object({
+            name: Joi.string().max(150).required()
+          })
+        }
+      }
+    },
+    {
+      method: "PUT",
+      path: "/users/{user}",
+      handler: createHandler<IUser>((pl, req) => updateUser(req.params.user, pl)),
+      options: {
+        validate: {
+          params: Joi.object({
+            user: Joi.string().required()
+          }),
           payload: Joi.object({
             name: Joi.string().max(150).required()
           })
