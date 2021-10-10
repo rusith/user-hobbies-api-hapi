@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  api:
+    container_name: user_hobbies_api
+    build:
+      context: "."
+      dockerfile: "Dockerfile.dev"
+    ports:
+      - 5000:3000
+    volumes:
+      - .:/app
+       - "/app/node_modules"
+    environment:
+      - NODE_ENV=development
+    stdin_open: true
+  database:
+    image: mongo:5.0.3
+    container_name: user_hobbies_db
+    volumes:
+      - ./db-data:/data/db
+    ports:
+      - 27017:27017
+    restart: unless-stopped
