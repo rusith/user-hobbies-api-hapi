@@ -10,8 +10,9 @@
     "rootDirs": ["./src"],
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "allowJs": true
   },
-  "lib": ["es2015"],
-  "exclude": ["node_modules"]
+  "lib": ["es2015"]
+  // "exclude": ["node_modules"]
 }

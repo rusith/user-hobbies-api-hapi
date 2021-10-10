@@ -1,13 +1,17 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-import { MongoClient, Db } from "mongodb"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import mongoose from "mongoose"
+import { MongoMemoryServer } from "mongodb-memory-server"
 
-export async function createTestDb(): Promise<[MongoClient, Db]> {
-  const connection = await MongoClient.connect((global as any).__MONGO_URI__, {
-    //@ts-ignore
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  const db = connection.db()
+let mongoServer: MongoMemoryServer = null
 
-  return [connection, db]
+export const dbConnect = async (): Promise<void> => {
+  mongoServer = await MongoMemoryServer.create({})
+  const uri = mongoServer.getUri()
+  await mongoose.connect(uri)
+}
+
+export const dbDisconnect = async (): Promise<void> => {
+  await mongoose.connection.dropDatabase()
+  await mongoose.connection.close()
+  await mongoServer.stop()
 }
