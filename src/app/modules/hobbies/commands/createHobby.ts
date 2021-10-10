@@ -18,6 +18,5 @@ export default async function (userId: ObjectId, hobby: IHobby): Promise<IHobby>
     })
   ).toObject()
 
-  console.log(result)
   return result
 }
