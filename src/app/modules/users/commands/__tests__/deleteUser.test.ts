@@ -5,13 +5,13 @@ import deleteUser from "../deleteUser"
 import { User } from "app/models/user"
 
 describe("deleteUser", () => {
-  it("should throw NotFound error if the user is not found", () => {
+  it("should throw NotFound error if the user is not found", async () => {
     // act
     const id = new mongoose.mongo.ObjectId()
     const result = deleteUser(id)
 
     // assert
-    expect(result).rejects.toThrow(NotFoundError)
+    await expect(result).rejects.toThrow(NotFoundError)
   })
 
   it("should remove the user from the database", async () => {
@@ -28,6 +28,6 @@ describe("deleteUser", () => {
     expect(existing).toBeNull()
   })
 
-  beforeAll(async () => dbConnect())
-  afterAll(async () => dbDisconnect())
+  beforeAll(dbConnect)
+  afterAll(dbDisconnect)
 })

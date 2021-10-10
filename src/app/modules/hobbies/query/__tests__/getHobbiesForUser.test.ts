@@ -31,6 +31,6 @@ describe("getHobbiesForUser", () => {
     expect(hobbies.find((h) => h.id === hobbyTwo.id).name).toEqual(hobbyTwo.name)
   })
 
-  beforeAll(async () => dbConnect())
-  afterAll(async () => dbDisconnect())
+  beforeAll(dbConnect)
+  afterAll(dbDisconnect)
 })

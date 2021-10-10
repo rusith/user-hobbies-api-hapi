@@ -7,7 +7,7 @@ describe("createUser", () => {
 
   it("should throw an error if name is not provided", async () => {
     // assert
-    expect(createUser(null)).rejects.toThrow("Name is required")
+    await expect(createUser(null)).rejects.toThrow("Name is required")
   })
 
   it("should add the new user to the database", async () => {
@@ -19,6 +19,6 @@ describe("createUser", () => {
     expect(fromDb.name).toBe("JohnDoe")
   })
 
-  beforeAll(async () => dbConnect())
-  afterAll(async () => dbDisconnect())
+  beforeAll(dbConnect)
+  afterAll(dbDisconnect)
 })

@@ -5,13 +5,13 @@ import { User } from "app/models/user"
 import { dbConnect, dbDisconnect } from "app/helpers/testing"
 
 describe("updateUser", () => {
-  it("should throw NotFound error if the user is not found", () => {
+  it("should throw NotFound error if the user is not found", async () => {
     // act
     const id = new mongoose.mongo.ObjectId()
     const result = updateUser(id, { id: id, name: "Name" })
 
     // assert
-    expect(result).rejects.toThrow(NotFoundError)
+    await expect(result).rejects.toThrow(NotFoundError)
   })
 
   it("should update the name of the existing user", async () => {
@@ -29,6 +29,6 @@ describe("updateUser", () => {
     expect(updated.name).toBe("NewName")
   })
 
-  beforeAll(async () => dbConnect())
-  afterAll(async () => dbDisconnect())
+  beforeAll(dbConnect)
+  afterAll(dbDisconnect)
 })
