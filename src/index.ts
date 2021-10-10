@@ -1,16 +1,19 @@
 import Hapi from "@hapi/hapi"
 import mongoose from "mongoose"
 import config from "config"
+import userApi from "api/user.api"
 
 const init = async () => {
   await mongoose.connect(config.get("db.url"))
 
   const server = Hapi.server({
-    port: 3000,
-    host: "localhost"
+    port: 3000
   })
 
+  userApi(server)
+
   await server.start()
+
   console.log("Server running on %s", server.info.uri)
 }
 
