@@ -4,6 +4,13 @@ import { createHobby, deleteHobby, getHobbiesForUser, updateHobby } from "app/mo
 import Joi from "joi"
 import { createHandler, handleValidatinError } from "./helpers"
 
+const hobbySchema = Joi.object({
+  id: Joi.string(),
+  name: Joi.string(),
+  passionLevel: Joi.number().integer(),
+  year: Joi.number().integer()
+}).label("Hobby")
+
 export default function (server: Hapi.Server): void {
   server.route([
     {
@@ -11,11 +18,16 @@ export default function (server: Hapi.Server): void {
       path: "/users/{user}/hobbies",
       handler: (req) => getHobbiesForUser(req.params.user),
       options: {
+        description: "Get hobbies for the given user",
         validate: {
           params: Joi.object({
-            user: Joi.string().required()
+            user: Joi.string().required().description("Target user ID")
           }),
           failAction: handleValidatinError
+        },
+        tags: ["api", "hobbies"],
+        response: {
+          schema: Joi.array().items(hobbySchema).description("ListOfHobbies")
         }
       }
     },
@@ -24,6 +36,7 @@ export default function (server: Hapi.Server): void {
       path: "/users/{user}/hobbies",
       handler: createHandler<IHobby>((pl, req) => createHobby(req.params.user, pl)),
       options: {
+        description: "Create a new hobby for the given user",
         validate: {
           params: Joi.object({
             user: Joi.string().required()
@@ -34,6 +47,10 @@ export default function (server: Hapi.Server): void {
             passionLevel: [Joi.number().integer().max(5).min(1), Joi.number().integer().required()]
           }),
           failAction: handleValidatinError
+        },
+        tags: ["api"],
+        response: {
+          schema: hobbySchema
         }
       }
     },
@@ -42,6 +59,7 @@ export default function (server: Hapi.Server): void {
       path: "/users/{user}/hobbies/{hobby}",
       handler: createHandler<IHobby>((pl, req) => updateHobby(req.params.hobby, pl)),
       options: {
+        description: "Updates the given hobby",
         validate: {
           params: Joi.object({
             user: Joi.string().required(),
@@ -53,20 +71,29 @@ export default function (server: Hapi.Server): void {
             passionLevel: [Joi.number().integer().max(5).min(1), Joi.required()]
           }),
           failAction: handleValidatinError
+        },
+        tags: ["api"],
+        response: {
+          schema: hobbySchema
         }
       }
     },
     {
       method: "DELETE",
       path: "/users/{user}/hobbies/{hobby}",
-      handler: createHandler<IHobby>((pl, req) => deleteHobby(req.params.hobby)),
+      handler: createHandler<IHobby>((_, req) => deleteHobby(req.params.hobby)),
       options: {
+        description: "Deletes the given hobby",
         validate: {
           params: Joi.object({
             user: Joi.string().required(),
             hobby: Joi.string().required()
           }),
           failAction: handleValidatinError
+        },
+        tags: ["api"],
+        response: {
+          schema: hobbySchema
         }
       }
     }

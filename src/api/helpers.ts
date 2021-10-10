@@ -6,7 +6,7 @@ import Hapi from "@hapi/hapi"
 export function createHandler<TI>(
   handler: (payload: TI, req: Hapi.Request, res: Hapi.ResponseToolkit) => unknown
 ): Hapi.Lifecycle.Method | Hapi.HandlerDecorations {
-  return (req, res) => {
+  return (req, res): any => {
     return handler(req.payload as any, req, res)
   }
 }
