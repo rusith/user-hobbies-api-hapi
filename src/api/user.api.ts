@@ -2,7 +2,7 @@ import Hapi from "@hapi/hapi"
 import { IUser } from "app/models/user"
 import { createUser, deleteUser, getAllUsers, updateUser } from "app/modules/users"
 import Joi from "joi"
-import { createHandler } from "./helpers"
+import { createHandler, handleValidatinError } from "./helpers"
 
 export default function (server: Hapi.Server): void {
   server.route([
@@ -16,11 +16,12 @@ export default function (server: Hapi.Server): void {
       path: "/users",
       handler: createHandler<IUser>((pl) => createUser(pl.name)),
       options: {
-        // validate: {
-        //   payload: Joi.object({
-        //     name: Joi.string().max(150).required().message("name is required")
-        //   })
-        // }
+        validate: {
+          payload: Joi.object({
+            name: Joi.string().max(150).required()
+          }),
+          failAction: handleValidatinError
+        }
       }
     },
     {
@@ -28,14 +29,15 @@ export default function (server: Hapi.Server): void {
       path: "/users/{user}",
       handler: createHandler<IUser>((pl, req) => updateUser(req.params.user, pl)),
       options: {
-        // validate: {
-        //   params: Joi.object({
-        //     user: Joi.string().required().message("user is required")
-        //   }),
-        //   payload: Joi.object({
-        //     name: Joi.string().max(150).required().message("name is required")
-        //   })
-        // }
+        validate: {
+          params: Joi.object({
+            user: Joi.string().required()
+          }),
+          payload: Joi.object({
+            name: Joi.string().max(150).required()
+          }),
+          failAction: handleValidatinError
+        }
       }
     },
     {
@@ -43,11 +45,12 @@ export default function (server: Hapi.Server): void {
       path: "/users/{user}",
       handler: createHandler<IUser>((_, req) => deleteUser(req.params.user)),
       options: {
-        // validate: {
-        //   params: Joi.object({
-        //     user: Joi.string().required().message("user is required")
-        //   })
-        // }
+        validate: {
+          params: Joi.object({
+            user: Joi.string().required()
+          }),
+          failAction: handleValidatinError
+        }
       }
     }
   ])

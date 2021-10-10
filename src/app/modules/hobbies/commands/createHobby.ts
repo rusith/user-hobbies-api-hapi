@@ -12,6 +12,7 @@ export default async function (userId: ObjectId, hobby: IHobby): Promise<IHobby>
   return Hobby.create({
     name: hobby.name,
     passionLevel: hobby.passionLevel,
-    year: hobby.year
+    year: hobby.year,
+    user: { _id: userId }
   })
 }
