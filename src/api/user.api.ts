@@ -21,7 +21,7 @@ export default function (server: Hapi.Server): void {
         tags: ["api"]
       },
       path: "/users",
-      handler: getAllUsers
+      handler: createHandler(() => getAllUsers())
     },
     {
       method: "POST",

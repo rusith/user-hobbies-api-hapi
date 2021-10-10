@@ -16,7 +16,7 @@ export default function (server: Hapi.Server): void {
     {
       method: "GET",
       path: "/users/{user}/hobbies",
-      handler: (req) => getHobbiesForUser(req.params.user),
+      handler: createHandler((_, req) => getHobbiesForUser(req.params.user)),
       options: {
         description: "Get hobbies for the given user",
         validate: {
