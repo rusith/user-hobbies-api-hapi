@@ -19,6 +19,8 @@ const schema = new Schema<IHobby>({
 })
 
 // clean the JSON output
-cleanObject(schema)
+cleanObject(schema, (o) => {
+  delete o.user
+})
 
 export const Hobby = model<IHobby>("Hobby", schema)

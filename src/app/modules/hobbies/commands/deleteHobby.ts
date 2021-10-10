@@ -10,5 +10,5 @@ export default async function (hobbyId: ObjectId): Promise<IHobby> {
 
   await existing.delete()
 
-  return existing
+  return existing.toObject()
 }

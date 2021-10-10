@@ -5,7 +5,7 @@ import { ObjectId } from "bson"
 export default async function (userId: ObjectId): Promise<IHobby[]> {
   const hobbies = await Hobby.find({
     user: { _id: userId } as any
-  }).exec()
+  })
 
-  return hobbies
+  return hobbies.map((o) => o.toObject())
 }

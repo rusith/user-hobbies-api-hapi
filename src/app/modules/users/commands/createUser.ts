@@ -5,7 +5,9 @@ export default async function (name: string): Promise<IUser> {
     throw new Error("Name is required")
   }
 
-  return new User({
-    name: name
-  }).save()
+  return (
+    await new User({
+      name: name
+    }).save()
+  ).toObject()
 }

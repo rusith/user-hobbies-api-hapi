@@ -9,10 +9,15 @@ export default async function (userId: ObjectId, hobby: IHobby): Promise<IHobby>
     throw new NotFoundError("User not found")
   }
 
-  return Hobby.create({
-    name: hobby.name,
-    passionLevel: hobby.passionLevel,
-    year: hobby.year,
-    user: { _id: userId }
-  })
+  const result = (
+    await Hobby.create({
+      name: hobby.name,
+      passionLevel: hobby.passionLevel,
+      year: hobby.year,
+      user: { _id: userId }
+    })
+  ).toObject()
+
+  console.log(result)
+  return result
 }

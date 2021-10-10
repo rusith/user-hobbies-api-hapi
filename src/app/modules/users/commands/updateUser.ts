@@ -11,5 +11,5 @@ export default async function (id: ObjectId, user: IUser): Promise<IUser> {
   existing.name = user.name
 
   await existing.save()
-  return existing
+  return existing.toObject()
 }

@@ -15,5 +15,5 @@ export default async function (hobbyId: ObjectId, hobby: IHobby): Promise<IHobby
 
   await result.save()
 
-  return result
+  return result.toObject()
 }

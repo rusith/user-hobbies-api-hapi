@@ -16,7 +16,7 @@ export default function (server: Hapi.Server): void {
       options: {
         description: "Get all users",
         response: {
-          schema: Joi.array().items(userSchema).description("ListOfUsers")
+          schema: Joi.array().items(userSchema)
         },
         tags: ["api"]
       },

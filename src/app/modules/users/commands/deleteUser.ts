@@ -16,5 +16,5 @@ export default async function (id: ObjectId): Promise<IUser> {
     userId: id
   })
 
-  return existing
+  return existing.toObject()
 }

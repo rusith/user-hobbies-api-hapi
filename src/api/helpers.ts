@@ -12,7 +12,7 @@ export function createHandler<TI>(
       if (e instanceof NotFoundError) {
         throw Boom.notFound(e.message)
       }
-      return e
+      throw e
     })
   }
 }
