@@ -19,6 +19,6 @@ describe("createUser", () => {
     expect(fromDb.name).toBe("JohnDoe")
   })
 
-  beforeEach(async () => dbConnect())
-  afterEach(async () => dbDisconnect())
+  beforeAll(async () => dbConnect())
+  afterAll(async () => dbDisconnect())
 })

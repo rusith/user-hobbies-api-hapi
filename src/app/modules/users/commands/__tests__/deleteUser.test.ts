@@ -1,32 +1,31 @@
-import { updateUser } from "../.."
 import mongoose from "mongoose"
 import NotFoundError from "app/errors/NotFoundError"
-import { User } from "app/models/user"
 import { dbConnect, dbDisconnect } from "app/helpers/testing"
+import deleteUser from "../deleteUser"
+import { User } from "app/models/user"
 
-describe("updateUser", () => {
+describe("deleteUser", () => {
   it("should throw NotFound error if the user is not found", () => {
     // act
     const id = new mongoose.mongo.ObjectId()
-    const result = updateUser(id, { id: id, name: "Name" })
+    const result = deleteUser(id)
 
     // assert
     expect(result).rejects.toThrow(NotFoundError)
   })
 
-  it("should update the name of the existing user", async () => {
+  it("should remove the user from the database", async () => {
     // arrange
     const created = await User.create({
-      name: "JohnDoe"
+      name: "NewUser"
     })
 
     // act
-    const result = await updateUser(created.id, { id: created.id, name: "NewName" })
+    await deleteUser(created.id)
 
     // assert
-    expect(result.id === created.id)
-    const updated = await User.findById(created.id)
-    expect(updated.name).toBe("NewName")
+    const existing = await User.findById(created.id)
+    expect(existing).toBeNull()
   })
 
   beforeAll(async () => dbConnect())

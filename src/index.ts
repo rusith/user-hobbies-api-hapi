@@ -2,6 +2,7 @@ import Hapi from "@hapi/hapi"
 import mongoose from "mongoose"
 import config from "config"
 import userApi from "api/user.api"
+import hobbyApi from "api/hobby.api"
 
 const init = async () => {
   await mongoose.connect(config.get("db.url"))
@@ -11,6 +12,7 @@ const init = async () => {
   })
 
   userApi(server)
+  hobbyApi(server)
 
   await server.start()
 

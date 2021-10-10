@@ -1,6 +1,6 @@
 import Hapi from "@hapi/hapi"
 import { IUser } from "app/models/user"
-import { createUser, getAllUsers, updateUser } from "app/modules/users"
+import { createUser, deleteUser, getAllUsers, updateUser } from "app/modules/users"
 import Joi from "joi"
 import { createHandler } from "./helpers"
 
@@ -34,6 +34,18 @@ export default function (server: Hapi.Server): void {
           }),
           payload: Joi.object({
             name: Joi.string().max(150).required()
+          })
+        }
+      }
+    },
+    {
+      method: "DELETE",
+      path: "/users/{user}",
+      handler: createHandler<IUser>((_, req) => deleteUser(req.params.user)),
+      options: {
+        validate: {
+          params: Joi.object({
+            user: Joi.string().required()
           })
         }
       }
