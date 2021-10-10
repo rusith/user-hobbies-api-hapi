@@ -11,5 +11,5 @@ module.exports = {
     }
   },
   moduleDirectories: ["node_modules", "src"],
-  testEnvironment: "node"
+  preset: "@shelf/jest-mongodb"
 }
